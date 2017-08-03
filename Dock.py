@@ -2,7 +2,21 @@ from flask import Flask, jsonify, abort, make_response, session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import tabledef
+import yaml
 
+
+# Load the configuration
+with open("config/app-config.yaml", 'r') as ymlfile:
+    cfg = yaml.load(ymlfile)
+
+    if cfg['app']['host'] == 'localhost':
+        APP_HOST = '127.0.0.1'
+    else:
+        APP_HOST = cfg['app']['host']
+
+    APP_PORT = cfg['app']['port']
+
+# create the application
 engine = create_engine('sqlite:///filetable.db', echo=True)
 
 user_session = sessionmaker(bind=engine)
@@ -59,4 +73,4 @@ def get_children(folder_id):
     return jsonify({'children': data})
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=4000)
+    app.run(debug=True, host=APP_HOST, port=APP_PORT)
