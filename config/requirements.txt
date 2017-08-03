@@ -1,0 +1,12 @@
+Flask==0.12.2
+Jinja2==2.9.6
+MarkupSafe==1.0
+PyYaml==3.12
+SQLAlchemy==1.1.11
+Werkzeug==0.12.2
+click==6.7
+itsdangerous==0.24
+pip==9.0.1
+setuptools==36.0.1
+virtualenv==15.1.0
+wheel==0.29.0
