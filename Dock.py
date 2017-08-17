@@ -1,8 +1,11 @@
-from flask import Flask, jsonify, abort, make_response, session
+from flask import Flask, jsonify, abort, make_response, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import tabledef
+from passlib.hash import pbkdf2_sha256
+import filetable_def
+import usertable_def
 import yaml
+import base64
 
 
 # Load the configuration
@@ -16,11 +19,17 @@ with open("config/app-config.yaml", 'r') as ymlfile:
 
     APP_PORT = cfg['app']['port']
 
-# create the application
-engine = create_engine('sqlite:///filetable.db', echo=True)
+# Create the application
 
-user_session = sessionmaker(bind=engine)
-s = user_session()
+# Load the file table
+filetable_engine = create_engine('sqlite:///filetable.db', echo=True)
+filetable_session = sessionmaker(bind=filetable_engine)
+file_table = filetable_session()
+
+# Load the user table
+usertable_engine = create_engine('sqlite:///usertable.db', echo=True)
+usertable_session = sessionmaker(bind=usertable_engine)
+user_table = usertable_session()
 
 app = Flask(__name__)
 
@@ -39,8 +48,8 @@ def not_found(error):
 @app.route('/AirHaven/api/1.0/files/<int:file_id>/download', methods=['POST'])
 @app.route('/AirHaven/api/1.0/files/<int:file_id>', methods=['POST'])
 def get_file(file_id):
-    query = s.query(tabledef.FileSystemObject).filter(tabledef.FileSystemObject.id == file_id).\
-                                               filter(tabledef.FileSystemObject.type == "file")
+    query = file_table.query(filetable_def.FileSystemObject).filter(filetable_def.FileSystemObject.id == file_id).\
+                                               filter(filetable_def.FileSystemObject.type == "file")
     if query.count() < 1:
         abort(404)
 
@@ -54,14 +63,14 @@ def get_file(file_id):
 @app.route('/AirHaven/api/1.0/files/<int:folder_id>/children', methods=['POST'])
 def get_children(folder_id):
     # gets a query of all the rows were the specified folder ID is in the
-    query = s.query(tabledef.Child).filter(tabledef.Child.folder_id == folder_id)
+    query = file_table.query(filetable_def.Child).filter(filetable_def.Child.folder_id == folder_id)
 
     if query.count() < 1:
         abort(404)
 
     data = []
     for row in query:
-        subquery = s.query(tabledef.FileSystemObject).filter(tabledef.FileSystemObject.id == row.child_id)
+        subquery = file_table.query(filetable_def.FileSystemObject).filter(filetable_def.FileSystemObject.id == row.child_id)
 
         # TODO: special handling with empty folders? (subquery.count() == 0)
         if subquery.count() > 0:
@@ -71,6 +80,25 @@ def get_children(folder_id):
             data.append(file_data)
 
     return jsonify({'children': data})
+
+
+@app.route('/AirHaven/api/1.0/users/authenticate-user')
+def auth_user():
+    # Process the standard authentication header
+    credentials = request.authorization
+
+    # Find a matching username in the table
+    query = user_table.query(usertable_def.User).filter(usertable_def.User.username.in_([credentials.username]))
+    result = query.first()
+
+    # Check the password hashes if a username was found in the database
+    if result:
+        user_validated = pbkdf2_sha256.verify(credentials.password, result.password_hash)
+    else:
+        user_validated = False
+
+    return jsonify({'token': user_validated})
+
 
 if __name__ == '__main__':
     app.run(debug=True, host=APP_HOST, port=APP_PORT)
