@@ -20,7 +20,7 @@ This application is designed to be a back end file server "haven" to which the w
 
 ## Usage ##
 1. Confirm that the software has been set up and that the configuration settings are correct.
-2. Execute `tabledef.py` (usually by running the command `python tabledef.py`).
+2. Execute `usertable_def.py` and `filetable_def.py` (usually by running the command `python [name_of_python_file]`).
     1. After executing, there should be an SQLite file in the same directory as `tabledef.py` called `filetable.db`.
 3. Execute `Dock.py` and confirm that the ip and port were properly bound and that the web server is running.
 4. Make API calls as needed, or run the web app front end located [here](https://github.com/bspymaster/AirHaven-FrontEnd).
