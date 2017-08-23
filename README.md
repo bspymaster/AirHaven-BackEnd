@@ -24,3 +24,10 @@ This application is designed to be a back end file server "haven" to which the w
     1. After executing, there should be an SQLite file in the same directory as `tabledef.py` called `filetable.db`.
 3. Execute `Dock.py` and confirm that the ip and port were properly bound and that the web server is running.
 4. Make API calls as needed, or run the web app front end located [here](https://github.com/bspymaster/AirHaven-FrontEnd).
+
+## Configuration Details ##
+The configuration data for the application is located in `config/app-config.yaml`, and is a standard YAML script file. The details for the specific configuration settings are found below.
+
+- `app/host`: The IP address on which the server will run.
+- `app/port`: The port on which the server will listen.
+- `files/root_folder`: The root directory in which all user root folders will be saved. To use an absolute path, start the path with a forward slash (`/`), followed by the path. To use a relative path, omit the leading forward slash. **Never** end the path with a forward slash.
