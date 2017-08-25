@@ -2,10 +2,11 @@
 
 This document is intended to be a reference sheet that lists all possible API calls. 
 
-| HTTP Method | URI                                                                   | Action                                                                         | Json Return           |
+| HTTP Method | URI                                                                   | Action                                                                         | Json Data             |
 |:-----------:|:---------------------------------------------------------------------:|:------------------------------------------------------------------------------:|:---------------------:|
 | POST        | `http://[hostname]/AirHaven/api/[version]/files/[folder_id]/children` | Gets the files & folder metadata at the given folder id.                       | Requesting Children   |
 | GET         | `http://[hostname]/AirHaven/api/[version]/users/authenticate-user`    | Verifies the given username & password (given in a standard Basic HTML header) | Authenticating Logins |
+| GET         | `http://[hostname]/AirHaven/api/[version]/users/register-user`        | Registers the username, email, and password combo for use in the system        | Registering Users     |
 
 ## Json Formatting ##
 
@@ -38,6 +39,31 @@ Returns a the user authentication data, including an api session token to verify
 ```
 {
   "token": <true|false>
+}
+```
+
+### Registering Users ###
+
+**Request Json**
+
+Receives the required data to properly create a user account.
+
+*(Note that, while the password is sent via plaintext, it is encrypted securely before being stored in the database. No plaintext copy of the password is stored anywhere.)*
+```
+{
+  "username": <username_string>
+  "email": <email_string>
+  "password": <plaintext_password_string>
+}
+```
+
+**Response Json**
+
+Sends back a list of string-formatted errors, or an empty list if there were no errors and the creation was successful.
+
+```
+{
+  "errors":[<list of string error outputs>]
 }
 ```
 
