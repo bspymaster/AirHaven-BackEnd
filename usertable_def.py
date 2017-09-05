@@ -13,14 +13,18 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    username = Column(String)
-    password_hash = Column(String)
+    username = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    password_hash = Column(String, nullable=False)
+    root_folder_id = Column(Integer, nullable=False)
 
     # ----------------------------------------------------------------------
-    def __init__(self, username, pass_hash):
+    def __init__(self, username, email, pass_hash, root_folder_id):
         """"""
         self.username = username
+        self.email = email
         self.password_hash = pass_hash
+        self.root_folder_id = root_folder_id
 
 
 # create tables

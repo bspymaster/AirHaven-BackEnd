@@ -1,3 +1,5 @@
 app:
   host: localhost
   port: 4000
+files:
+  root_folder: user_root
