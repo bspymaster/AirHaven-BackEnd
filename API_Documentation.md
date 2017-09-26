@@ -16,7 +16,7 @@ This section details all the different send/return json API sending
 
 **Response Json**
 
-Returns a `children` array of objects where each object in the array is a file object contained in the folder
+Returns a `children` array of objects where each object in the array is a file object contained in the folder.
 ```
 {
   "children": [
@@ -29,16 +29,24 @@ Returns a `children` array of objects where each object in the array is a file o
 }
 ```
 
+If there are no children, the following is returned:
+```
+{
+  "children": []
+}
+```
+
 ### Authenticating Logins ###
 
 **Response Json**
 
-Returns a the user authentication data, including an api session token to verify all requests.
+Returns a the user authentication data, including an api session token to verify all requests. If the token is valid, the server will also send back the numeric ID associated with the user's root directory. Otherwise, the root_folder will be -1.
 
 *(Note that as of now, tokens have not been implemented, and so the API simply returns whether or not the user is verified.)*
 ```
 {
-  "token": <true|false>
+  "token": <true|false>,
+  "root_directory": <id_integer_pointing_to_user's_root_folder | -1>
 }
 ```
 
@@ -51,8 +59,8 @@ Receives the required data to properly create a user account.
 *(Note that, while the password is sent via plaintext, it is encrypted securely before being stored in the database. No plaintext copy of the password is stored anywhere.)*
 ```
 {
-  "username": <username_string>
-  "email": <email_string>
+  "username": <username_string>,
+  "email": <email_string>,
   "password": <plaintext_password_string>
 }
 ```
