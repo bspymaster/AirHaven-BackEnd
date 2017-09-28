@@ -142,6 +142,8 @@ def register_user():
         new_user = usertable_def.User(username, email, pbkdf2_sha256.hash(password), user_root_id)
         user_table.add(new_user)
 
+        user_table.commit()
+
     return jsonify({'errors': return_json})
 
 
