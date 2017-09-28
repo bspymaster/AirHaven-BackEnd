@@ -67,18 +67,14 @@ def get_file(file_id):
 
 @app.route('/AirHaven/api/1.0/files/<int:folder_id>/children', methods=['POST'])
 def get_children(folder_id):
-    # gets a query of all the rows were the specified folder ID is in the
+    # gets a query of all the rows where the specified folder ID is the parent
     query = file_table.query(filetable_def.Child).filter(filetable_def.Child.folder_id == folder_id)
-
-    if query.count() < 1:
-        abort(404)
 
     data = []
     for row in query:
         subquery = file_table.query(filetable_def.FileSystemObject).filter(
             filetable_def.FileSystemObject.id == row.child_id)
 
-        # TODO: special handling with empty folders? (subquery.count() == 0)
         if subquery.count() > 0:
             file_row = subquery.first()
             file_data = {'id': file_row.id, 'type': file_row.type, 'name': file_row.name}
@@ -98,12 +94,16 @@ def auth_user():
     result = query.first()
 
     # Check the password hashes if a username was found in the database
+    user_root_folder_id = -1
     if result:
         user_validated = pbkdf2_sha256.verify(credentials.password, result.password_hash)
+        # If a valid token is given, update the root folder.
+        if user_validated:
+            user_root_folder_id = result.root_folder_id
     else:
         user_validated = False
 
-    return jsonify({'token': user_validated})
+    return jsonify({'token': user_validated, 'root_directory': user_root_folder_id})
 
 
 @app.route('/AirHaven/api/1.0/users/register-user')
@@ -141,6 +141,8 @@ def register_user():
         # Assign the root ID to the new user
         new_user = usertable_def.User(username, email, pbkdf2_sha256.hash(password), user_root_id)
         user_table.add(new_user)
+
+        user_table.commit()
 
     return jsonify({'errors': return_json})
 
