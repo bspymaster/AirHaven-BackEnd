@@ -1,0 +1,13 @@
+# Virtualenv folders
+venv/
+virtualenv/
+
+# Python compiled files
+__pycache__/
+*.pyc
+
+# database files
+*.db*
+
+# pycharm
+.idea/

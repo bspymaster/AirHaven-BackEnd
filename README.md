@@ -2,12 +2,12 @@
 
 **Author**: Ben Schwabe
 
-**Webpage**: https://github.com/bspymaster/AirHaven-BackEnd    
+**Webpage**: https://github.com/scytail/AirHaven-BackEnd
 
 ## Summary ##
 Keep your files secure in your own flying fortress in the clouds.
 
-This application is designed to be a back end file server "haven" to which the web app can "dock", found [here](https://github.com/bspymaster/AirHaven-FrontEnd).
+This application is designed to be a back end file server "haven" to which a all sorts of applications can "dock" to trade and interact with the files stored.
 
 ## Requirements ##
 - Python 3.3+
@@ -20,10 +20,8 @@ This application is designed to be a back end file server "haven" to which the w
 
 ## Usage ##
 1. Confirm that the software has been set up and that the configuration settings are correct.
-2. Execute `usertable_def.py` and `filetable_def.py` (usually by running the command `python [name_of_python_file]`).
-    1. After executing, there should be an SQLite file in the same directory as `tabledef.py` called `filetable.db`.
-3. Execute `Dock.py` and confirm that the ip and port were properly bound and that the web server is running.
-4. Make API calls as needed, or run the web app front end located [here](https://github.com/bspymaster/AirHaven-FrontEnd).
+2. Execute `Dock.py` and confirm that the ip and port were properly bound and that the web server is running.
+3. Make API calls as needed, or view the UI by taking your API server's URL and appending `/ui` to it.
 
 ## Configuration Details ##
 The configuration data for the application is located in `config/app-config.yaml`, and is a standard YAML script file. The details for the specific configuration settings are found below.

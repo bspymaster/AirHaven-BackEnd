@@ -1,0 +1,88 @@
+openapi: "3.0.0"
+info:
+  title: AirHaven
+  description: A remote endpoint for file system management.
+  version: "0.0.1"
+servers:
+  - url: /airapi
+    description: Base URL
+
+# Paths supported by the server application
+paths:
+  /files:
+    post:
+      operationId: files.create_new_file
+      summary: Create a new file object in the system
+      description: Create a new file object in the system with the provided metadata
+      responses:
+        '200':
+          description: Successfully added the file object to the system
+    get:
+      operationId: files.retrieve_all
+      summary: Retrieve a list of all file objects in the system
+      description: Retrieves the entire list of all file objects in the system in an arbitrary order.
+      parameters:
+        - name: length
+          in: query
+          required: false
+          description: The maximum number of file objects to return
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved all the file objects
+  /files/{file_id}:
+    get:
+      operationId: files.retrieve_file_by_id
+      summary: Retrieves the file object by the specified ID
+      description: Retrieves a file object in the system specified by its unique, system-defined ID number
+      parameters:
+        - name: file_id
+          in: path
+          required: true
+          description: The database ID associated with the file to return
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved the specified ID.
+        '400':
+          description: The specified file object ID was invalid (not a number).
+        '404':
+          description: The specified file object with the given ID was not found.
+    put:
+      operationId: files.update_file_by_id
+      summary: Updates the file object with the specified ID
+      description: Updates a file object in the system specified by its unique, system-defined ID number
+      parameters:
+        - name: file_id
+          in: path
+          required: true
+          description: The database ID associated with the file to return
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully updated the specified ID.
+        '400':
+          description: The specified file object ID was invalid (not a number).
+        '404':
+          description: The specified file object with the given ID was not found.
+    delete:
+      operationId: files.delete_file_by_id
+      summary: Deletes the file object with the specified ID
+      description: Deletes a file object in the system specified by its unique, system-defined ID number
+      parameters:
+        - name: file_id
+          in: path
+          required: true
+          description: The database ID associated with the file to return
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully updated the specified ID.
+        '400':
+          description: The specified file object ID was invalid (not a number).
+        '404':
+          description: The specified file object with the given ID was not found.
