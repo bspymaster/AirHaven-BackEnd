@@ -19,7 +19,6 @@ app_config_file_name = 'app-config.yaml'
 
 # Create the Connexion application instance
 connexion_app = connexion.App(__name__, specification_dir=base_dir)
-connexion_app.add_api(os.path.join(base_dir, config_folder, api_config_file_name))
 
 # Get the underlying Flask app instance
 flask_app = connexion_app.app

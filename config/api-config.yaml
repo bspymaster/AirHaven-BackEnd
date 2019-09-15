@@ -22,7 +22,13 @@ paths:
       summary: Retrieve a list of all file objects in the system
       description: Retrieves the entire list of all file objects in the system in an arbitrary order.
       parameters:
-        - name: length
+        - name: count
+          in: query
+          required: false
+          description: The maximum number of file objects to return
+          schema:
+            type: integer
+        - name: offset
           in: query
           required: false
           description: The maximum number of file objects to return

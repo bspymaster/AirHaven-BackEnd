@@ -1,5 +1,5 @@
 from flask import abort
-# from base.datamodel import *
+from base.datamodel import *
 
 # from sqlalchemy import create_engine
 # from sqlalchemy.orm import sessionmaker
@@ -17,14 +17,19 @@ from flask import abort
 # user_table = usertable_session()
 
 
-def retrieve_all(length=-1):
+def retrieve_all(count=-1, offset=0):
     """
 
     :param length:  the number of objects to get
     :return:        json string of list of files, limited to the length provided, if any
     """
 
-    abort(500, 'This feature has not been implemented yet (file={0})'.format(length))
+    # Retrieve all files
+    files = FileSystem.query.order_by(FileSystem.name).limit(count).offset(offset)
+
+    # Serialize the data and send it off
+    file_schema = FileSystemSchema(many=True)
+    return file_schema.dump(files).data
 
 
 def create_new_file(file_data):

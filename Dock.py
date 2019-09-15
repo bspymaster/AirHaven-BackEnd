@@ -2,14 +2,16 @@
 import os
 from base.config import (
     connexion_app,
-    app_host,
-    app_port,
+    database,
     base_dir,
     database_folder,
-    database_file_name
+    database_file_name,
+    config_folder,
+    api_config_file_name,
+    app_host,
+    app_port
 )
-# datamodel needs to be run before we can create_all on the database, so it knows what to pull
-from base.datamodel import database
+
 
 # build database if it doesn't exist
 if not os.path.exists(os.path.join(base_dir, database_folder, database_file_name)):
@@ -22,4 +24,6 @@ def hello_world():
 
 
 if __name__ == '__main__':
+    # Add the API and start the application
+    connexion_app.add_api(os.path.join(base_dir, config_folder, api_config_file_name))
     connexion_app.run(debug=True, host=app_host, port=app_port)
