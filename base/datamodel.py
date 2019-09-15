@@ -44,10 +44,6 @@ class FileSystem(database.Model):
     entered_stamp = database.Column(database.DateTime, default=datetime.utcnow, nullable=False)
     updated_stamp = database.Column(database.DateTime, default=datetime.utcnow,
                                     onupdate=datetime.utcnow, nullable=False)
-    __table_args__ = (
-        database.CheckConstraint(type in (0, 1), name='check_type_valid'),
-        {}
-    )
 
 
 class FileSystemSchema(marshmallow.ModelSchema):

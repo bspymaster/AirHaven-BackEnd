@@ -1,4 +1,6 @@
-from flask import abort, jsonify
+from flask import abort
+# from base.datamodel import *
+
 # from sqlalchemy import create_engine
 # from sqlalchemy.orm import sessionmaker
 
@@ -40,15 +42,17 @@ def retrieve_file_by_id(file_id):
     :param file_id: The ID of the file to retrieve
     :return:        A JSON object of all the file data
     """
-    # query = FileSystem.query.filter(FileSystem.id == file_id).filter(FileSystem.type == "file")
-    # if query.count() < 1:
-    #     abort(404)
+
+    # if not isinstance(file_id, int):
+    #     abort(400, f'{file_id} is not a valid integer.')
     #
-    # file_obj = query.first()
-    # # TODO: replace path with file data itself for download
-    # data = {file_obj.type: {'id': file_obj.id, 'name': file_obj.name, 'path': file_obj.path}}
+    # query = FileSystem.query.filter(FileSystem.filesystem_id == file_id).one_or_none()
     #
-    # return jsonify(data)
+    # if query is not None:
+    #     query_schema = FileSystemSchema()
+    #     return query_schema.dump(query).data
+    # else:
+    #     abort(404, f'File not found for ID {file_id}')
 
     abort(500, 'This feature has not been implemented yet (file={0})'.format(file_id))
 
